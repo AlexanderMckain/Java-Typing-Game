@@ -1,0 +1,110 @@
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
+//Main class
+public class Main {
+  public static void main(String[] args){
+
+    // Create a list of words
+    ArrayList<String> dictionary = new ArrayList<>();
+     // Easy phrases
+    dictionary.add("Hello world");
+    dictionary.add("Goodbye world");
+    dictionary.add("Good morning");
+    dictionary.add("How are you?");
+    dictionary.add("I love you");
+    dictionary.add("I love java");
+
+    //Moderate phrases
+    dictionary.add("Programming is fun");
+    dictionary.add("Coding challenge");
+    dictionary.add("Java development");
+    dictionary.add("Learning algorithms");
+    dictionary.add("Object-oriented design");
+
+    //Difficult phrases
+    dictionary.add("Parallel computing");
+    dictionary.add("Recursive function");
+    dictionary.add("Optimization techniques");
+    dictionary.add("Artificial intelligence");
+    dictionary.add("Blockchain technology");
+
+    // Add more phrases as needed
+
+    // Scanner to read user input
+    Scanner scanner = new Scanner(System.in);
+
+    // While loop to keep the game running when you input correctly
+
+    while (true) {
+      // Select a random phrase from the list
+      playGame(dictionary, scanner);
+      
+      //Ask the user if they want to play again
+      System.out.println("Do you want to play again? (yes/no)");
+      // Read the user's input and covert it to lowercase
+      String playAgain = scanner.nextLine().toLowerCase();
+      
+
+      // If the user doesnt want to play exit the loop
+      if (!playAgain.equals("yes")) {
+      break;
+      }
+   
+    }
+
+    // Close the scanner
+    scanner.close();
+  
+  }
+  // Method to play the game
+  private static void playGame(ArrayList<String> dictionary, Scanner scanner){
+    // Select a random phrase from the list
+    Random random = new Random();
+    String randomPhrase = dictionary.get(random.nextInt(dictionary.size()));
+
+    // Display the phrase to the user
+    System.out.println("Type the phrase: " + randomPhrase);
+
+    // Start a timer ( in this case 7 seconds)
+    Timer timer = new Timer();
+    timer.schedule(new MyTask(randomPhrase), TimeUnit.SECONDS.toMillis(7));
+    // Read the user's input
+    String userInput = scanner.nextLine();
+  
+    timer.cancel();
+    // Check if the user's input matches the random phrase
+    if (userInput.equalsIgnoreCase(randomPhrase)) {
+      // If the user's input matches the random phrase, display a success message and continue
+      System.out.println("Correct!");
+      // if the user gets it incorrect exits the program
+    } else {
+      System.out.println("Incorrect. The correct phrase was: " + randomPhrase);
+      System.exit(0);
+      
+    }
+    
+  }
+  // Timer class
+  static class MyTask extends TimerTask {
+    // The phrase to be displayed
+    private String correctPhrase;
+    // Constructor to initialize the correct display
+    public MyTask(String correctPhrase) {
+      this.correctPhrase = correctPhrase;
+    }
+    // Method when the timer runs out
+    @Override
+    public void run() {
+      // Display when the timer runs out
+      System.out.println("\n Times up! You failed to type the correct phrase " + correctPhrase + ", Try again.");
+      System.exit(0);
+
+  
+    }
+  }
+} 
